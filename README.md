@@ -89,21 +89,25 @@ pip freeze > requirements.txt```
 
 **Hadil Jobrani** — `feature-Hadil`
 Gestion des données :
-génération automatique de `ventes.csv` avec n lignes choisies par l'utilisateur
-lecture et préparation des données
+-génération automatique de `ventes.csv` avec n lignes choisies par l'utilisateur
+
+-lecture et préparation des données
 
 
 **Nour** — `feature-Nour`
 Traitement & Calcul : 
-calcul du CA Brut, CA Net après remise ,TVA
-organisation des données traitées.
-export du fichier `resultats_final.csv`
+-calcul du CA Brut, CA Net après remise ,TVA
+
+-organisation des données traitées.
+
+-export du fichier `resultats_final.csv`
 
 
 **Balkiss** — `feature-Balkiss`
 Résultats & Visualisation :
-identification des meilleurs produits
-création des graphiques avec Matplotlib.
+-identification des meilleurs produits
+
+-création des graphiques avec Matplotlib.
 
 ---
 
