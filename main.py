@@ -56,3 +56,19 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# Partie des graphiques 
+import sys
+sys.path.insert(0, "src")
+
+from data_loader import charger_ventes
+from calcul        import calculer_ventes
+from graphiques    import afficher_graphiques
+
+if __name__ == "__main__":
+
+    # ── Chargement + Calculs + Graphiques ──
+    ventes    = charger_ventes()
+    resultats = calculer_ventes(ventes)
+    afficher_graphiques(resultats)

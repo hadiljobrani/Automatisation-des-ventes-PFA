@@ -1,57 +1,55 @@
 import matplotlib.pyplot as plt
-import csv
-
-def charger_resultats(nom_fichier: str = "data/resultats_final.csv") -> list:
-    resultats = []
-    with open(nom_fichier, mode="r", encoding="utf-8") as fichier:
-        reader = csv.DictReader(fichier)
-        for ligne in reader:
-            resultats.append({
-                "ID"      : int(ligne["ID"]),
-                "Prix"    : float(ligne["Prix"]),
-                "Quantite": int(ligne["Quantite"]),
-                "CA_Net"  : float(ligne["CA_Net"]),
-                "TVA"     : float(ligne["TVA"])
-            })
-    return resultats
-
 
 def afficher_graphiques(resultats: list) -> None:
-    ids = [str(r["ID"]) for r in resultats]
-    ca_nets = [r["CA_Net"] for r in resultats]
-    quantites = [r["Quantite"] for r in resultats]
-    tvas = [r["TVA"] for r in resultats]
-    
-    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 10))
-    fig.suptitle("📊 Analyse des Ventes", fontsize=16, fontweight='bold')
-    
-    # Graphique 1 : CA Net par produit
-    ax1.bar(ids, ca_nets, color='steelblue', edgecolor='black')
-    ax1.set_title("CA Net par Produit")
-    ax1.set_xlabel("ID Produit")
-    ax1.set_ylabel("CA Net (TND)")
-    ax1.tick_params(axis='x', rotation=45)
-    
-    # Graphique 2 : Quantités vendues
-    ax2.bar(ids, quantites, color='coral', edgecolor='black')
-    ax2.set_title("Quantités Vendues par Produit")
-    ax2.set_xlabel("ID Produit")
-    ax2.set_ylabel("Quantité")
-    ax2.tick_params(axis='x', rotation=45)
-    
-    # Graphique 3 : TVA par produit
-    ax3.bar(ids, tvas, color='lightgreen', edgecolor='black')
-    ax3.set_title("TVA par Produit")
-    ax3.set_xlabel("ID Produit")
-    ax3.set_ylabel("TVA (TND)")
-    ax3.tick_params(axis='x', rotation=45)
-    
-    # Graphique 4 : Répartition CA Net (Pie Chart)
-    colors = plt.cm.Set3(range(len(ids)))
-    ax4.pie(ca_nets, labels=ids, autopct='%1.1f%%', colors=colors, startangle=90)
-    ax4.set_title("Répartition du CA Net")
-    
+    ids      = [str(r["ID"]) for r in resultats]
+    ca_bruts = [r["CA_Brut"] for r in resultats]
+    ca_nets  = [r["CA_Net"]  for r in resultats]
+    tvas     = [r["TVA"]     for r in resultats]
+    remises  = [r["Remise"]  for r in resultats]
+
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    fig.suptitle("Analyse des Ventes", fontsize=16, fontweight="bold")
+
+    # ── Graphique 1 : CA Brut vs CA Net (barres groupées) ──
+    x, width = range(len(ids)), 0.35
+    axes[0,0].bar([i - width/2 for i in x], ca_bruts, width, label="CA Brut", color="#4C72B0")
+    axes[0,0].bar([i + width/2 for i in x], ca_nets,  width, label="CA Net",  color="#55A868")
+    axes[0,0].set_title("CA Brut vs CA Net par Produit")
+    axes[0,0].set_xlabel("ID Produit")
+    axes[0,0].set_ylabel("Montant (TND)")
+    axes[0,0].set_xticks(list(x))
+    axes[0,0].set_xticklabels(ids)
+    axes[0,0].legend()
+    axes[0,0].grid(axis="y", linestyle="--", alpha=0.5)
+
+    # ── Graphique 2 : Répartition CA Net (camembert) ──
+    axes[0,1].pie(
+        ca_nets,
+        labels=[f"ID {i}" for i in ids],
+        autopct="%1.1f%%",
+        startangle=140,
+        colors=["#4C72B0", "#55A868", "#C44E52", "#8172B2", "#CCB974"]
+    )
+    axes[0,1].set_title("Répartition du CA Net")
+
+    # ── Graphique 3 : TVA par produit (barres horizontales) ──
+    axes[1,0].barh(ids, tvas, color="#C44E52")
+    axes[1,0].set_title("TVA par Produit")
+    axes[1,0].set_xlabel("Montant TVA (TND)")
+    axes[1,0].set_ylabel("ID Produit")
+    axes[1,0].grid(axis="x", linestyle="--", alpha=0.5)
+
+    # ── Graphique 4 : Remise par produit (courbe) ──
+    axes[1,1].plot(ids, remises, marker="o", color="#8172B2", linewidth=2, markersize=8)
+    axes[1,1].fill_between(ids, remises, alpha=0.2, color="#8172B2")
+    axes[1,1].set_title("Remise (%) par Produit")
+    axes[1,1].set_xlabel("ID Produit")
+    axes[1,1].set_ylabel("Remise (%)")
+    axes[1,1].grid(linestyle="--", alpha=0.5)
+    for xi, yi in zip(ids, remises):
+        axes[1,1].annotate(f"{yi}%", (xi, yi), textcoords="offset points", xytext=(0, 8), ha="center", fontsize=9)
+
     plt.tight_layout()
-    plt.savefig("data/graphiques_ventes.png", dpi=300, bbox_inches='tight')
-    print("✅ Graphiques sauvegardés dans 'data/graphiques_ventes.png'")
+    plt.savefig("data/graphiques_ventes.png", dpi=150)
     plt.show()
+    print("✅ Graphique sauvegardé dans 'data/graphiques_ventes.png'")
