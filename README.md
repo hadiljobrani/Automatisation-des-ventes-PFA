@@ -19,6 +19,7 @@ pip
 Git
 VS Code (recommandé)
 
+
 2.**Structure du projet :**
 ```
 Automatisation-des-ventes-PFA/
@@ -37,6 +38,8 @@ Automatisation-des-ventes-PFA/
 ├── main.py                     ← point d'entrée principal
 ├── requirements.txt            ← bibliothèques du projet
 └── README.md
+
+```
 
 ## 3. 🛠️préparation :
 **Étape 1 — Créer le repository GitHub**(Hadil)
