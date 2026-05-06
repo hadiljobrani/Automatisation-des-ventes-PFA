@@ -12,7 +12,7 @@ Ce projet consiste à développer un programme Python qui génère automatiqueme
 L'objectif principal est de simuler un traitement de données réel en entreprise, en suivant la chaîne : **Données → Calcul → Résultats**
 
 
-#2. ⚙️ Prérequis
+#. ⚙️ Prérequis
 
 Python 3.x
 pip
